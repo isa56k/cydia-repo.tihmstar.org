@@ -2,7 +2,7 @@ Package: com.compilingentropy.fuzzycactus
 Name: Fuzzycactus
 Version: 0.1.0.3
 Description: Automated MobileSafari Fuzzer
-A tool which automates and simplifies the on-device fuzzing of MobileSafari.
+	A tool which automates and simplifies the on-device fuzzing of MobileSafari.
 
 	How it works: This tool can turn anyone's freshly jailbroken device into a fuzzing machine in minutes. All the setup is handled for you.
 
