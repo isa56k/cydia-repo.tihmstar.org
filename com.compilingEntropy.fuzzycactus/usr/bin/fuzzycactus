@@ -1,7 +1,10 @@
 #!/bin/bash
+
+#installs to /usr/bin/
+
 action=$1
 file=$2
-usage="Usage: fuzzycactus [start/stop/help] /path/to/file"
+usage="Usage: fuzzycactus [start/stop/help] /path/to/file.mov"
 wrkdir="/private/var/fuzzycactus"
 
 if [[ -z "$action" ]]; then
@@ -21,7 +24,8 @@ if [[ "$action" == "start" ]]; then
 		fi
 
 		if [[ ! -e "$file" ]]; then
-			echo "The provided file does not exist, please check your path and try again."
+			echo "The provided file does not exist."
+			echo "Please check your path and try again."
 			exit
 		fi
 
