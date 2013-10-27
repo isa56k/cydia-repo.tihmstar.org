@@ -1,54 +1,72 @@
 #!/bin/bash
+action=$1
 file=$2
-param=$1
-if ([ -z $param ]); then
-        echo "You must provide an action."
-        echo "Usage: fuzzycactus [start/stop/help] ./file.mov"
-        exit
+usage="Usage: fuzzycactus [start/stop/help] /path/to/file"
+wrkdir="/private/var/fuzzycactus"
+
+if [[ -z "$action" ]]; then
+	echo "You must provide an action."
+	echo "$usage"
+	exit
 fi
 
-if ([ -z $file ] && [ "$param" != "stop" ] && [ "$param" != "help" ]); then
-        echo "You must provide an action and a file to fuzz"
-        echo "Usage: fuzzycactus [start/stop/help] ./file.mov"
-        exit
-fi
+if [[ "$action" == "start" ]]; then
+	if [[ -n "$file" ]]; then
 
-if ([ "$param" != "start" ] && [ "$param" != "help" ] && [ "$param" != "stop" ]); then
-        echo "Wrong action! allowed actions: \"start\" or \"stop\" or \"help\""
-	echo "You must provide a file to fuzz"
-	echo "Usage: fuzzycactus [start/stop/help] ./file.mov"
-        exit
-fi
+		path="$( pwd )"
+		if [[ "${file:0:2}" == "./" ]]; then
+			file="$path/${file:2}"
+		elif [[ "${file:0:3}" == "../" ]]; then
+			file="$path/$file"
+		fi
 
-if ([ "$param" = "help" ]);then
-	echo "You must provide a file to fuzz"
-	echo "Usage: fuzzycactus [start/stop/help] ./file.mov"
-	echo ""
-	echo "\"fuzzycactus start ./file.mov\" starts fuzzing ./file.mov"
-	echo "   once started you can savely Ctrl-C and disconnect"
-	echo "\"fuzzycactus stop\" stops the fuzzing daemon"
-	echo "\"fuzzycactus help\" displays this help message"
-	echo ""
-	echo "fuzzycactus is installed to /var/fuzzycactus/ so you can cd there and use tools like crashclean.sh"
-	echo "your crashes are in /var/fuzzycactus/Results"
-	echo "if you had a kernelpanic you should cd to /var/fuzzycactus and run crashclean.sh"	
-fi
+		if [[ ! -e "$file" ]]; then
+			echo "The provided file does not exist, please check your path and try again."
+			exit
+		fi
 
+		cd $wrkdir
+		./start.sh "$file"
 
-if ([ "$param" = "start" ]);then
-	path=$(pwd)
-	if ([ ${file:0:1} = "." ]);then
-		file=$path/${file:2}
-	elif ([ ${file:0:1} = "/" ]);then
-		file=$file
+		exit
 	else
-		file=$path/$file
+		echo "You must provide a file."
+		echo "$usage"
+		exit
 	fi
-	cd /var/fuzzycactus/
-	./start.sh $file
-fi
-
-if ([ "$param" = "stop" ]);then
-	cd /var/fuzzycactus/
-        ./stop.sh
+elif [[ "$action" == "stop" ]]; then
+	cd $wrkdir
+	./stop.sh
+	exit
+elif [[ "$action" == "help" ]]; then
+	echo "$usage"
+	echo ""
+	echo "To start fuzzing ./file.mov, do:"
+	echo "	fuzzycactus start ./file.mov"
+	echo "To stop fuzzing, do:"
+	echo "	fuzzycactus stop"
+	echo "For help, do:"
+	echo "	fuzzycactus help"
+	echo ""
+	echo "The working directory for fuzzycactus is $wrkdir/."
+	echo "In this directory you will find the tools that make up fuzzycactus, as well as the results of your fuzzing session."
+	echo "All crashes found are placed in $wrkdir/Crashes/ for you to inspect."
+	echo ""
+	echo "fuzzycactus attempts to pair crashes with the files that caused them."
+	echo "The paired files and crashes are found in $wrkdir/Results/."
+	echo "You will be notified if there are crashes that cannot be paired with files that caused them so that you can pair them manually."
+	echo "If your device had a kernel panic while fuzzing, you can either start a new fuzzing session or run 'fuzzycactus stop' in order to pair the crashes."
+	echo ""
+	echo "This tool is designed to be run over ssh."
+	echo "If you choose to start this tool via mobileterminal, stop the script by doing a 'slide-to-power-off' or ssh in and do 'fuzzycactus stop'."
+	echo ""
+	echo "Important notices:"
+	echo "Do not touch your device while it is fuzzing. This can cause false positives with the crash-detector or other issues."
+	echo "Before you begin fuzzing, always ensure that your device is configured not to send diagnostics and usage to Apple."
+	echo 'This setting can be changed in "Settings" > "General" > "About" > "Diagnostics & Usage". '"Enable the \"Don't send\" option."
+	exit
+else
+	echo 'Not a valid action! Allowed actions are: "start", "stop", and "help".'
+	echo "$usage"
+	exit
 fi
