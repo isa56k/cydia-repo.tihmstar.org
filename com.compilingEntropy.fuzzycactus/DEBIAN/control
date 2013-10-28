@@ -1,6 +1,6 @@
 Package: com.compilingentropy.fuzzycactus
 Name: Fuzzycactus
-Version: 1.0.4-2
+Version: 1.0.5-1
 Description: Automated MobileSafari Fuzzer
 	<div align="left">
 	<p>A tool which automates and simplifies the on-device fuzzing of MobileSafari.
