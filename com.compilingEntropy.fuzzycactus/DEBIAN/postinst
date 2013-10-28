@@ -1,4 +1,4 @@
 #!/bin/bash
 chmod +x /usr/bin/fuzzycactus
-chmod +x /var/fuzzycactus/*.sh
-exit 0
+chmod +x /private/var/fuzzycactus/*.sh
+exit

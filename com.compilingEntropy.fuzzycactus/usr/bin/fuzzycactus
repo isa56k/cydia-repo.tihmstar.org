@@ -7,42 +7,59 @@ file=$2
 usage="Usage: fuzzycactus [start/stop/help] /path/to/file.mov"
 wrkdir="/private/var/fuzzycactus"
 
-if [[ -z "$action" ]]; then
-	echo "You must provide an action."
-	echo "$usage"
-	exit
-fi
+start()
+{
+	cd $wrkdir/
 
-if [[ "$action" == "start" ]]; then
-	if [[ -n "$file" ]]; then
-
-		path="$( pwd )"
-		if [[ "${file:0:2}" == "./" ]]; then
-			file="$path/${file:2}"
-		elif [[ "${file:0:3}" == "../" ]]; then
-			file="$path/$file"
-		fi
-
-		if [[ ! -e "$file" ]]; then
-			echo "The provided file does not exist."
-			echo "Please check your path and try again."
-			exit
-		fi
-
-		cd $wrkdir
-		./start.sh "$file"
-
-		exit
-	else
-		echo "You must provide a file."
-		echo "$usage"
+	if [[ ! -e ./checks.sh ]]; then
+		echo "No 'checks.sh' file found, please re-download from http://github.com/compilingEntropy/fuzzycactus."
 		exit
 	fi
-elif [[ "$action" == "stop" ]]; then
-	cd $wrkdir
-	./stop.sh
-	exit
-elif [[ "$action" == "help" ]]; then
+
+	./checks.sh
+	if [ $? -ne 2 ]; then
+		exit
+	fi
+
+	if [[ ! -e ./crashclean.sh ]]; then
+		echo "No 'crashclean.sh' file found, please re-download from http://github.com/compilingEntropy/fuzzycactus."
+		exit
+	fi
+	./crashclean.sh 2>&1 | tee -a ./fuzz.log
+
+	if [[ ! -e ./fuzzycactus.sh ]]; then
+		echo "No 'fuzzycactus.sh' file found, please re-download from http://github.com/compilingEntropy/fuzzycactus."
+		exit
+	fi
+	./fuzzycactus.sh $file &> ./fuzz.log &
+	tail -f ./fuzz.log
+}
+
+stop()
+{
+	cd $wrkdir/
+	pnum=$( ps -ax | grep fuzzycactus | grep -v stop | grep -c -v grep )
+
+	if [ $pnum -eq 0 ]; then
+		echo "No fuzzycactus process running."
+	else
+		while [ $pnum -ge 1 ]; do
+			kill "$( fuzz=( $( ps -ax | grep fuzzycactus | grep -v stop | grep -v grep ) ) && echo ${fuzz[0]} )" &> /dev/null
+			echo "Stopped."
+			((pnum--))
+			sleep 0.5
+		done
+	fi
+
+	if [[ ! -e ./crashclean.sh ]]; then
+		echo "No 'crashclean.sh' file found, please re-download from http://github.com/compilingEntropy/fuzzycactus."
+		exit
+	fi
+	./crashclean.sh 2>&1 | tee -a ./fuzz.log
+}
+
+helper()
+{
 	echo "$usage"
 	echo ""
 	echo "To start fuzzing ./file.mov, do:"
@@ -68,6 +85,44 @@ elif [[ "$action" == "help" ]]; then
 	echo "Do not touch your device while it is fuzzing. This can cause false positives with the crash-detector or other issues."
 	echo "Before you begin fuzzing, always ensure that your device is configured not to send diagnostics and usage to Apple."
 	echo 'This setting can be changed in "Settings" > "General" > "About" > "Diagnostics & Usage". '"Enable the \"Don't send\" option."
+}
+
+
+if [[ -z "$action" ]]; then
+	echo "You must provide an action."
+	echo "$usage"
+	exit
+fi
+
+if [[ "$action" == "start" ]]; then
+	if [[ -n "$file" ]]; then
+
+		path="$( pwd )"
+		if [[ "${file:0:2}" == "./" ]]; then
+			file="$path/${file:2}"
+		elif [[ "${file:0:3}" == "../" ]]; then
+			file="$path/$file"
+		fi
+
+		if [[ ! -e "$file" ]]; then
+			echo "The provided file does not exist."
+			echo "Please check your path and try again."
+			exit
+		fi
+
+		start
+
+		exit
+	else
+		echo "You must provide a file."
+		echo "$usage"
+		exit
+	fi
+elif [[ "$action" == "stop" ]]; then
+	stop
+	exit
+elif [[ "$action" == "help" ]]; then
+	helper
 	exit
 else
 	echo 'Not a valid action! Allowed actions are: "start", "stop", and "help".'
