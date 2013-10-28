@@ -6,7 +6,7 @@ Description: Automated MobileSafari Fuzzer
 	<p>A tool which automates and simplifies the on-device fuzzing of MobileSafari.
 	<p>How it works: This tool can turn anyone's freshly jailbroken device into a fuzzing machine in minutes. All the setup is handled for you.
 	<br>
-	<p>Usage: 
+	<p>Usage: fuzzycactus [start/stop/help] /path/to/file.mov [-s] [-t 11]
 	<p>~$ fuzzycactus start /path/to/file
 	<p>~$ fuzzycactus stop
 	<p>~$ fuzzycactus help
