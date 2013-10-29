@@ -2,6 +2,7 @@ Package: com.compilingentropy.fuzzycactus
 Name: Fuzzycactus
 Version: 1.0.5-1
 Description: Automated MobileSafari Fuzzer
+	<html>
 	<div align="left">
 	<p>A tool which automates and simplifies the on-device fuzzing of MobileSafari.
 	<p>How it works: This tool can turn anyone's freshly jailbroken device into a fuzzing machine in minutes. All the setup is handled for you.
@@ -21,6 +22,7 @@ Description: Automated MobileSafari Fuzzer
 	<p>Read more about how this package works, and see the source code on <a href="http://github.com/compilingEntropy/fuzzycactus">GitHub</a>.
 	<p>Report bugs or ask questions to me on twitter <a href="http://twitter.com/compiledEntropy">@compiledEntropy</a>
 	</div>
+	</html>
 Section: cmd-tool
 Depends: firmware (>= 6.0),com.innoying.sbutils,bc,lighttpd,adv-cmds,com.cameronfarzaneh.safariresetter,curl,wget,coreutils
 Conflicts: 
