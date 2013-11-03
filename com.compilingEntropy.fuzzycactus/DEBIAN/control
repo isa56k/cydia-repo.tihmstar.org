@@ -1,15 +1,16 @@
 Package: com.compilingentropy.fuzzycactus
 Name: Fuzzycactus
-Version: 1.0.5-1
+Version: 1.0.6-1
 Description: Automated MobileSafari Fuzzer
 	<html>
 	<div align="left">
 	<p>A tool which automates and simplifies the on-device fuzzing of MobileSafari.
 	<p>How it works: This tool can turn anyone's freshly jailbroken device into a fuzzing machine in minutes. All the setup is handled for you.
 	<br>
-	<p>Usage: fuzzycactus [start/stop/help] /path/to/file.mov [-s] [-t 11]
+	<p>Usage: fuzzycactus [start/stop/watch/help] /path/to/file.mov [-s] [-t 11] [-r 0.0001:0.001]
 	<p>~$ fuzzycactus start /path/to/file
 	<p>~$ fuzzycactus stop
+	<p>~$ fuzzycactus watch
 	<p>~$ fuzzycactus help
 	<br>
 	<p>The working directory for this tool is /private/var/fuzzycactus/, you can see your results and crashes in there.
