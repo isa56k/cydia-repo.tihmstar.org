@@ -1,6 +1,6 @@
 Package: com.compilingentropy.fuzzycactus
 Name: Fuzzycactus
-Version: 1.0.6-1
+Version: 1.0.7-1
 Description: Automated MobileSafari Fuzzer
 	<html>
 	<div align="left">
@@ -25,7 +25,14 @@ Description: Automated MobileSafari Fuzzer
 	<br>
 	<br>
 	Changelog:
-	<p>1.0.6
+	<p>1.0.7
+	<p>Fixed directory naming
+	<p>Fixed pairing algorithm
+	<p>Fixed hangs in crashclean
+	<p>Fixed '*' appender
+	<p>Fixed 'watch' to count processes better
+	<br>
+	1.0.6
 	<p>Added 'watch' command to allow you to view current session
 	<p>Added '-r' option to allow users to specify their own mutation percentages
 	<p>Updated the '-t' regex to allow decimal time values
