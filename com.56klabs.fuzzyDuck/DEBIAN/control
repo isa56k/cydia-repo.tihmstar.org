@@ -1,0 +1,26 @@
+Package: com.56klabs.fuzzyDuck
+Name: fuzzyDuck
+Version: 0.4
+Description: Automated iOS Fuzzer
+	<html>
+	<div align="left">
+	<p>A tool for helping you fuzz!
+	<p>      Usage:   ./fuzzyDuck.sh <filename> <url> <port> <sleep>
+    <p>               ./fuzzyDuck.sh fuzzThis.mov http://localhost 3000 15  <- Standard Usage
+    <p>               ./fuzzyDuck cleanUp <- !!Warning!! Deletes all fuzzyDuck directories (01 - 04)
+	<p>               ./fuzzyDuck installUpD0g <- Installs upD0g a launch Daemon to run after reboot / panic
+    <p>               ./fuzzyDuck removeUpD0g <- Removes upD0g launch Daemon
+	</div>
+	</html>
+Section: cmd-tool
+Depends: firmware (>= 6.0),com.innoying.sbutils,lighttpd,wget,gawk,com.ericasadun.utilities
+Conflicts: 
+Replaces: 
+Priority: optional
+Architecture: iphoneos-arm
+Author: isa56k
+dev: isa56k
+Homepage: http://www.isa56k.com
+Depiction: 
+Maintainer: isa56k
+Icon: 
