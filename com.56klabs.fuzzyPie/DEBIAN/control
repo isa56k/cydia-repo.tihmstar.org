@@ -1,0 +1,23 @@
+Package: com.56klabs.fuzzPie
+Name: fuzzPie
+Version: 0.1
+Description: Pyhton based fuzzer. 
+	<html>
+	<div align="left">
+	<p>A tool to create mutated fuzz testcases.
+    <p>      Usage:   fuzzPie.py <original input file> <mutated ouput file>
+    <p>
+	</div>
+	</html>
+Section: cmd-tool
+Depends: firmware (>= 6.0),python
+Conflicts: 
+Replaces: 
+Priority: optional
+Architecture: iphoneos-arm
+Author: isa56k
+dev: isa56k
+Homepage: http://www.isa56k.com
+Depiction: 
+Maintainer: isa56k
+Icon: 
