@@ -1,7 +1,7 @@
 Package: com.56klabs.fuzzPie
 Name: fuzzPie
 Version: 0.1
-Description: Pyhton based fuzzer. 
+Description: Python based fuzzer. 
 	<html>
 	<div align="left">
 	<p>A tool to create mutated fuzz testcases.
